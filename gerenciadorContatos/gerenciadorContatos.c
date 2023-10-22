@@ -9,6 +9,11 @@ struct Contact {
   char dateOfBirth[10];
 };
 
+void clearBuffer() {
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF);
+}
+
 void addContact(struct Contact contacts[], int *count) {
   struct Contact newContact;
   printf("Nome: ");
