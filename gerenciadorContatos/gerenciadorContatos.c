@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <string.h>
-
 struct Contact {
   char name[50];
   char phone[15];
-  char address[20];
-  char email[20];
-  char dateOfBirth[10];
+  char address[100]; // Aumentei o tamanho do campo do endereço
+  char email[50];    // Aumentei o tamanho do campo do email
+  char dateOfBirth[15];
 };
 
 void clearBuffer() {
@@ -16,16 +15,29 @@ void clearBuffer() {
 
 void addContact(struct Contact contacts[], int *count) {
   struct Contact newContact;
+  
+  printf("Adicionar novo contato:\n");
+  
   printf("Nome: ");
-  scanf("%s", newContact.name);
+  fgets(newContact.name, sizeof(newContact.name), stdin);
+  newContact.name[strcspn(newContact.name, "\n")] = '\0'; // Remover a quebra de linha
+  
   printf("Telefone: ");
-  scanf("%s", newContact.phone);
+  fgets(newContact.phone, sizeof(newContact.phone), stdin);
+  newContact.phone[strcspn(newContact.phone, "\n")] = '\0'; // Remover a quebra de linha
+  
   printf("Endereço: ");
-  scanf("%s", newContact.address);
+  fgets(newContact.address, sizeof(newContact.address), stdin);
+  newContact.address[strcspn(newContact.address, "\n")] = '\0'; // Remover a quebra de linha
+  
   printf("Email: ");
-  scanf("%s", newContact.email);
+  fgets(newContact.email, sizeof(newContact.email), stdin);
+  newContact.email[strcspn(newContact.email, "\n")] = '\0'; // Remover a quebra de linha
+  
   printf("Data de Nascimento: ");
-  scanf("%s", newContact.dateOfBirth);
+  fgets(newContact.dateOfBirth, sizeof(newContact.dateOfBirth), stdin);
+  newContact.dateOfBirth[strcspn(newContact.dateOfBirth, "\n")] = '\0'; // Remover a quebra de linha
+  
   contacts[(*count)++] = newContact;
 }
 
