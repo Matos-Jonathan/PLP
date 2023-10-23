@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+
 struct Contact {
   char name[50];
   char phone[15];
-  char address[100]; // Aumentei o tamanho do campo do endereço
-  char email[50];    // Aumentei o tamanho do campo do email
+  char address[100];
+  char email[50];
   char dateOfBirth[15];
 };
 
@@ -19,24 +20,24 @@ void addContact(struct Contact contacts[], int *count) {
   printf("Adicionar novo contato:\n");
   
   printf("Nome: ");
-  fgets(newContact.name, sizeof(newContact.name), stdin);
-  newContact.name[strcspn(newContact.name, "\n")] = '\0'; // Remover a quebra de linha
+  scanf("%s", newContact.name);
+  clearBuffer();
   
   printf("Telefone: ");
-  fgets(newContact.phone, sizeof(newContact.phone), stdin);
-  newContact.phone[strcspn(newContact.phone, "\n")] = '\0'; // Remover a quebra de linha
+  scanf("%s", newContact.phone);
+  clearBuffer();
   
   printf("Endereço: ");
-  fgets(newContact.address, sizeof(newContact.address), stdin);
-  newContact.address[strcspn(newContact.address, "\n")] = '\0'; // Remover a quebra de linha
+  scanf("%s", newContact.address);
+  clearBuffer();
   
   printf("Email: ");
-  fgets(newContact.email, sizeof(newContact.email), stdin);
-  newContact.email[strcspn(newContact.email, "\n")] = '\0'; // Remover a quebra de linha
+  scanf("%s", newContact.email);
+  clearBuffer();
   
   printf("Data de Nascimento: ");
-  fgets(newContact.dateOfBirth, sizeof(newContact.dateOfBirth), stdin);
-  newContact.dateOfBirth[strcspn(newContact.dateOfBirth, "\n")] = '\0'; // Remover a quebra de linha
+  scanf("%s", newContact.dateOfBirth);
+  clearBuffer();
   
   contacts[(*count)++] = newContact;
 }
@@ -48,35 +49,49 @@ void listContacts(struct Contact contacts[], int count) {
   }
 }
 
-void editContact(struct Contact contacts[], int count){
+void editContact(struct Contact contacts[], int count) {
   char searchPhone[50];
   printf("Digite o número do contato que você deseja editar: ");
   scanf("%s", searchPhone);
+  clearBuffer(); 
 
   int found = 0;
   int i;
-  for(i = 0; i < count; i++){
-    if(strcmp(contacts[i].phone, searchPhone) == 0){
+  for (i = 0; i < count; i++) {
+    if (strcmp(contacts[i].phone, searchPhone) == 0) {
       found = 1;
+      printf("Contato encontrado. Você pode editar as informações:\n");
+
       printf("Novo nome: ");
       scanf("%s", contacts[i].name);
+      clearBuffer();
+
       printf("Novo telefone: ");
       scanf("%s", contacts[i].phone);
+      clearBuffer();
+
       printf("Novo Endereço: ");
       scanf("%s", contacts[i].address);
+      clearBuffer();
+
       printf("Novo Email: ");
       scanf("%s", contacts[i].email);
+      clearBuffer();
+
       printf("Nova Data de Nascimento: ");
       scanf("%s", contacts[i].dateOfBirth);
+      clearBuffer(); 
+
       printf("Contato editado com sucesso!\n");
       break;
     }
   }
 
-  if(!found){
+  if (!found) {
     printf("Contato não encontrado.\n");
   }
 }
+
 
 void removeContact(struct Contact contacts[], int *count) {
   char searchName[50];
