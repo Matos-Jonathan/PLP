@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from ementa import Ementa
 from disciplina import Disciplina
 from curso import Curso
@@ -20,12 +21,12 @@ class GerenciadorCursos:
         menu_label = tk.Label(frame, text="MENU", font=("Arial", 20))
         menu_label.pack()
 
-        adicionar_curso_button = tk.Button(frame, text="1. Adicionar Curso", command=self.show_add_curso_frame)
-        remover_curso_button = tk.Button(frame, text="2. Remover Curso", command=self.show_remove_curso_frame)
-        listar_cursos_button = tk.Button(frame, text="3. Listar Cursos", command=self.show_list_cursos_frame)
-        add_disciplina_button = tk.Button(frame, text="4. Adicionar Disciplina a um Curso", command=self.show_add_disciplina_frame)
-        remove_disciplina_button = tk.Button(frame, text="5. Remover Disciplina de um Curso", command=self.show_remove_disciplina_frame)
-        list_disciplinas_button = tk.Button(frame, text="6. Listar Disciplinas de um Curso", command=self.show_list_disciplinas_frame)
+        adicionar_curso_button = tk.Button(frame, text="1. Adicionar Curso", width=40, command=self.show_add_curso_frame)
+        remover_curso_button = tk.Button(frame, text="2. Remover Curso", width=40, command=self.show_remove_curso_frame)
+        listar_cursos_button = tk.Button(frame, text="3. Listar Cursos", width=40, command=self.show_list_cursos_frame)
+        add_disciplina_button = tk.Button(frame, text="4. Adicionar Disciplina a um Curso", width=40, command=self.show_add_disciplina_frame)
+        remove_disciplina_button = tk.Button(frame, text="5. Remover Disciplina de um Curso", width=40, command=self.show_remove_disciplina_frame)
+        list_disciplinas_button = tk.Button(frame, text="6. Listar Disciplinas de um Curso", width=40, command=self.show_list_disciplinas_frame)
 
         adicionar_curso_button.pack()
         remover_curso_button.pack()
@@ -54,7 +55,7 @@ class GerenciadorCursos:
         nome_label = tk.Label(frame, text="Nome do Curso:")
         codigo_entry = tk.Entry(frame)
         nome_entry = tk.Entry(frame)
-        salvar_button = tk.Button(frame, text="Salvar", command=lambda: self.save_curso(codigo_entry.get(), nome_entry.get()))
+        salvar_button = tk.Button(frame, text="Salvar", width=40, command=lambda: self.save_curso(codigo_entry.get(), nome_entry.get()))
 
         codigo_label.pack()
         codigo_entry.pack()
@@ -62,7 +63,7 @@ class GerenciadorCursos:
         nome_entry.pack()
         salvar_button.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
@@ -83,13 +84,13 @@ class GerenciadorCursos:
 
         codigo_label = tk.Label(frame, text="Digite o código do curso que deseja remover:")
         codigo_entry = tk.Entry(frame)
-        remover_button = tk.Button(frame, text="Remover", command=lambda: self.remove_curso(codigo_entry.get()))
+        remover_button = tk.Button(frame, text="Remover", width=40, command=lambda: self.remove_curso(codigo_entry.get()))
 
         codigo_label.pack()
         codigo_entry.pack()
         remover_button.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
@@ -123,7 +124,7 @@ class GerenciadorCursos:
         if self.cursos:
             cursos_listbox.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
@@ -154,8 +155,8 @@ class GerenciadorCursos:
         carga_horaria_disciplina_entry = tk.Entry(frame)
         ementa_disciplina_entry = tk.Entry(frame)
 
-        adicionar_disciplina_button = tk.Button(frame, text="Adicionar Disciplina", command=lambda: self.add_disciplina(
-            cursos_listbox.get(cursos_listbox.curselection()),
+        adicionar_disciplina_button = tk.Button(frame, text="Adicionar Disciplina", width=40, command=lambda: self.add_disciplina(
+            cursos_listbox.get(cursos_listbox.curselection()[0]),
             codigo_disciplina_entry.get(),
             nome_disciplina_entry.get(),
             tipo_disciplina_entry.get(),
@@ -181,13 +182,12 @@ class GerenciadorCursos:
         ementa_disciplina_entry.pack()
         adicionar_disciplina_button.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
 
-    def add_disciplina(self, curso_str, codigo, nome, tipo, periodo, carga_horaria, ementa):
-    
+    def add_disciplina(self, curso_str, codigo, nome, tipo, periodo, carga_horaria, ementa):    
         if curso_str:
             try:
                 curso = self.find_curso_by_string(curso_str)
@@ -197,8 +197,8 @@ class GerenciadorCursos:
                 self.show_frame(self.menu_frame)
             except ValueError:
                 tk.messagebox.showerror("Erro", "Selecione um curso válido.")
-            else:
-                tk.messagebox.showerror("Erro", "Selecione um curso para adicionar a disciplina.")
+        else:
+            tk.messagebox.showerror("Erro", "Selecione um curso para adicionar a disciplina.")
 
     def find_curso_by_string(self, curso_str):
         for curso in self.cursos:
@@ -222,7 +222,7 @@ class GerenciadorCursos:
         codigo_disciplina_label = tk.Label(frame, text="Digite o código da disciplina:")
         codigo_disciplina_entry = tk.Entry(frame)
         
-        remover_disciplina_button = tk.Button(frame, text="Remover Disciplina", command=lambda: self.remove_disciplina(
+        remover_disciplina_button = tk.Button(frame, text="Remover Disciplina", width=40, command=lambda: self.remove_disciplina(
             cursos_listbox.get(cursos_listbox.curselection()),
             codigo_disciplina_entry.get()
         ))
@@ -234,7 +234,7 @@ class GerenciadorCursos:
         codigo_disciplina_entry.pack()
         remover_disciplina_button.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
@@ -268,13 +268,13 @@ class GerenciadorCursos:
         cursos_label.pack()
         cursos_listbox.pack()
 
-        listar_disciplinas_button = tk.Button(frame, text="Listar Disciplinas", command=lambda: self.show_disciplinas(
+        listar_disciplinas_button = tk.Button(frame, text="Listar Disciplinas", width=40, command=lambda: self.show_disciplinas(
             cursos_listbox.get(cursos_listbox.curselection())
         ))
 
         listar_disciplinas_button.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
@@ -305,7 +305,7 @@ class GerenciadorCursos:
         if disciplinas:
             disciplinas_listbox.pack()
 
-        voltar_button = tk.Button(frame, text="Voltar para o MENU", command=lambda: self.show_frame(self.menu_frame))
+        voltar_button = tk.Button(frame, text="Voltar para o MENU", width=40, command=lambda: self.show_frame(self.menu_frame))
         voltar_button.pack()
 
         return frame
@@ -314,5 +314,6 @@ class GerenciadorCursos:
 if __name__ == "__main__":
     root = tk.Tk()
     app = GerenciadorCursos(root)
+    root.geometry("800x600")
     root.mainloop()
 

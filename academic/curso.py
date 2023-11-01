@@ -5,7 +5,8 @@ class Curso:
         self.disciplinas = []
 
     def adicionar_disciplina(self, disciplina):
-        self.disciplinas.append(disciplina)
+        if disciplina not in self.disciplinas:
+            self.disciplinas.append(disciplina)
 
     def remover_disciplina(self, disciplina):
         self.disciplinas.remove(disciplina)
