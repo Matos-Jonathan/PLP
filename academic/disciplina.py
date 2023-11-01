@@ -1,3 +1,5 @@
+from ementa import Ementa
+
 class Disciplina:
     def __init__(self, codigo, nome, tipo, periodo, carga_horaria, ementa=None):
         self.codigo = codigo
@@ -6,7 +8,7 @@ class Disciplina:
         self.pre_requisitos = []
         self.periodo = periodo
         self.carga_horaria = carga_horaria
-        self.ementa = ementa
+        self.ementa = self.ementa = Ementa(ementa)
 
     def __getCodigo(self):
         return self.codigo
