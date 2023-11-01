@@ -41,7 +41,7 @@ class ContactList:
             pass
 
     def save_contacts(self):
-        with open("contacts.txt", "w") as file:
+        with open("contactsPython.txt", "w") as file:
             for contact in self.contacts:
                 file.write(f"{contact.name},{contact.phone},{contact.email},{contact.address},{contact.dateOfBirth}\n")
 
@@ -95,7 +95,7 @@ class ContactView:
         if not self.controller:
             self.controller = ContactController(ContactList(), self)
         self.root.title("Lista de Contatos")
-        self.root.geometry("600x400")  # Definindo um tamanho padrão para a janela
+        self.root.geometry("600x400") 
 
         self.main_menu()
 
@@ -110,8 +110,8 @@ class ContactView:
         list_button = tk.Button(self.root, text="Listar Contatos", command=self.show_contact_list)
         list_button.pack(pady=5)
 
-        remove_button = tk.Button(self.root, text="Remover Contato", command=self.confirm_remove_contact)
-        remove_button.pack(pady=5)
+        search_button = tk.Button(self.root, text="Buscar Contato", command=self.show_search_contact)
+        search_button.pack(pady=5)
 
     def show_add_contact(self):
         self.clear_screen()
@@ -162,6 +162,10 @@ class ContactView:
     def show_contact_list(self):
         self.clear_screen()
         self.root.title("Lista de Contatos")
+
+        back_button = tk.Button(self.root, text="Voltar para o Menu", command=self.main_menu)
+        back_button.pack(pady=5)
+
         if not self.controller.contact_list.contacts:
             label = tk.Label(self.root, text="Lista de contatos vazia", font=('Helvetica', 12))
             label.pack(pady=10)
@@ -176,9 +180,6 @@ class ContactView:
 
             remove_button = tk.Button(self.root, text="Remover Contato", command=self.confirm_remove_contact)
             remove_button.pack(pady=5)
-
-            back_button = tk.Button(self.root, text="Voltar para o Menu", command=self.main_menu)
-            back_button.pack(pady=5)
 
     def show_edit_contact(self):
         selected_index = self.listbox.curselection()
@@ -252,6 +253,103 @@ class ContactView:
                     self.show_contact_list()
                 else:
                     messagebox.showerror("Erro", "Contato não encontrado.")
+
+    def show_search_contact(self):
+        self.clear_screen()
+        self.root.title("Buscar Contato")
+
+        phone_label = tk.Label(self.root, text="Telefone:")
+        phone_label.pack()
+        self.phone_entry = tk.Entry(self.root)
+        self.phone_entry.pack()
+
+        search_button = tk.Button(self.root, text="Buscar", command=self.search_contact)
+        search_button.pack(pady=5)
+
+        cancel_button = tk.Button(self.root, text="Cancelar", command=self.main_menu)
+        cancel_button.pack(pady=5)
+
+    def search_contact(self):
+        phone = self.phone_entry.get()
+        contact = self.controller.search_contact_by_phone(phone)
+        if contact:
+            self.clear_screen()
+            self.root.title("Contato Encontrado")
+            label = tk.Label(self.root, text=f"Nome: {contact.name}, Telefone: {contact.phone}, Email: {contact.email}, Endereço: {contact.address}, Data de Nascimento: {contact.dateOfBirth}")
+            label.pack(pady=10)
+
+            edit_button = tk.Button(self.root, text="Editar Contato", command=lambda: self.show_edit_contact_for_search(contact))
+            edit_button.pack(pady=5)
+
+            remove_button = tk.Button(self.root, text="Remover Contato", command=lambda: self.confirm_remove_contact_for_search(contact))
+            remove_button.pack(pady=5)
+
+            back_button = tk.Button(self.root, text="Voltar para o Menu", command=self.main_menu)
+            back_button.pack(pady=5)
+        else:
+            messagebox.showerror("Erro", "Contato não encontrado.")
+
+    def show_edit_contact_for_search(self, contact):
+        self.clear_screen()
+        self.root.title("Editar Contato")
+
+        name_label = tk.Label(self.root, text="Nome:")
+        name_label.pack()
+        self.name_entry = tk.Entry(self.root)
+        self.name_entry.insert(0, contact.name)
+        self.name_entry.pack()
+
+        phone_label = tk.Label(self.root, text="Telefone:")
+        phone_label.pack()
+        self.phone_entry = tk.Entry(self.root)
+        self.phone_entry.insert(0, contact.phone)
+        self.phone_entry.pack()
+
+        email_label = tk.Label(self.root, text="Email:")
+        email_label.pack()
+        self.email_entry = tk.Entry(self.root)
+        self.email_entry.insert(0, contact.email)
+        self.email_entry.pack()
+
+        address_label = tk.Label(self.root, text="Endereço:")
+        address_label.pack()
+        self.address_entry = tk.Entry(self.root)
+        self.address_entry.insert(0, contact.address)
+        self.address_entry.pack()
+
+        date_label = tk.Label(self.root, text="Data de Nascimento:")
+        date_label.pack()
+        self.date_entry = tk.Entry(self.root)
+        self.date_entry.insert(0, contact.dateOfBirth)
+        self.date_entry.pack()
+
+        save_button = tk.Button(self.root, text="Salvar", command=lambda: self.save_contact_for_search(contact))
+        save_button.pack(pady=5)
+
+        cancel_button = tk.Button(self.root, text="Cancelar", command=self.show_search_contact)
+        cancel_button.pack(pady=5)
+
+    def save_contact_for_search(self, contact):
+        name = self.name_entry.get()
+        phone = self.phone_entry.get()
+        email = self.email_entry.get()
+        address = self.address_entry.get()
+        date = self.date_entry.get()
+
+        if self.controller.edit_contact(self.controller.contact_list.contacts.index(contact), name, phone, email, address, date):
+            messagebox.showinfo("Sucesso", "Contato editado com sucesso.")
+            self.show_search_contact()
+        else:
+            messagebox.showerror("Erro", "Índice de contato inválido.")
+
+    def confirm_remove_contact_for_search(self, contact):
+        confirmation = messagebox.askyesno("Confirmar Remoção", "Tem certeza que deseja remover o contato selecionado?")
+        if confirmation:
+            if self.controller.remove_contact_by_phone(contact.phone):
+                messagebox.showinfo("Sucesso", "Contato removido com sucesso.")
+                self.show_search_contact()
+            else:
+                messagebox.showerror("Erro", "Contato não encontrado.")
 
     def clear_screen(self):
         for widget in self.root.winfo_children():
