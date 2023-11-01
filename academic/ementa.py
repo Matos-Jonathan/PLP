@@ -1,6 +1,9 @@
 class Ementa:
-    def __int__(self, descricao):
+    def __init__(self, descricao):
         self.descricao = descricao
 
-    def __str__(self):
+    def __getDescricao(self):
         return self.descricao
+    
+    def __setDescricao(self, descricao):
+        self.descricao = descricao

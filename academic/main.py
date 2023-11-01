@@ -3,8 +3,7 @@ from disciplina import Disciplina
 from curso import Curso
 
 
-def criar_ementa():
-    descricao = input("Digite a descrição da ementa: ")
+def criar_ementa(descricao):
     return Ementa(descricao)
 
 
@@ -12,11 +11,12 @@ def criar_disciplina():
     codigo = input("Digite o código da disciplina: ")
     nome = input("Digite o nome da disciplina: ")
     tipo = input("Digite o tipo da disciplina: ")
-    pre_requisitos = input("Digite os pré-requisitos (separados por vírgula): ").split(",")
+    #pre_requisitos = input("Digite os pré-requisitos (separados por vírgula): ").split(",")
     periodo = int(input("Digite o período: "))
     carga_horaria = int(input("Digite a carga horária: "))
-    ementa = criar_ementa()
-    return Disciplina(codigo, nome, tipo, pre_requisitos, periodo, carga_horaria, ementa)
+    ementa = input("Digite a descrição da ementa: ")
+    ementa = criar_ementa(ementa)
+    return Disciplina(codigo, nome, tipo, periodo, carga_horaria, ementa)
 
 
 def criar_curso():
